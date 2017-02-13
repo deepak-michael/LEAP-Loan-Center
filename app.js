@@ -165,6 +165,23 @@ app.post('/folders', function(req, res) {
     req.pipe(request.post(url)).pipe(res);
 });
 
+app.patch('/folders/:id', function(req, res) {
+    console.log('in folders items patch proxy' + ' ' + req.method + req.body);
+    setRequestAuthToken(req);
+    var url = cmsProtocol+'://'+cmsHost + req.url;
+    console.log('url ' + ' ' + url );
+
+    req.pipe(request.patch(url)).pipe(res);
+});
+
+app.put('/folders/:id', function(req, res) {
+    console.log('in folders items put proxy' + ' ' + req.method + req.body);
+    setRequestAuthToken(req);
+    var url = cmsProtocol+'://'+cmsHost + req.url;
+    console.log('url ' + ' ' + url );
+
+    req.pipe(request.put(url)).pipe(res);
+});
 
 app.get('/files', function(req, res) {
     console.log('in files proxy')
@@ -184,7 +201,7 @@ app.patch('/files/:id', function(req, res) {
 });
 
 app.put('/files/:id', function(req, res) {
-  console.log('in files items patch proxy' + ' ' + req.method + req.body);
+  console.log('in files items put proxy' + ' ' + req.method + req.body);
   setRequestAuthToken(req);
   var url = cmsProtocol+'://'+cmsHost + req.url;
   console.log('url ' + ' ' + url );

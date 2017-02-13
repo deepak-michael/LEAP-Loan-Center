@@ -38,11 +38,11 @@
 
           </form>
         </md-tab>
-        <md-tab label="Loan info" ng-hide="vm.content.type == 'folder'">
+        <md-tab label="Loan info" ng-if="vm.content.type != 'folder'">
           <form name="loanForm" flex="100" layout="row">
             <div layout="column" flex="50">
               <md-input-container>
-                <label>First Name:</label>
+                <label>First Name: {{vm.content.type}}</label>
                 <input ng-model="vm.loanTrait.firstname" required>
               </md-input-container>
               <md-input-container>
@@ -87,7 +87,7 @@
             </div>
           </form>
         </md-tab>
-        <md-tab label="Approval" ng-hide="vm.content.type == 'folder'">
+        <md-tab label="Approval" ng-if="vm.content.type != 'folder'">
           <form name="approvalForm" flex="100" layout="column">
             <md-input-container>
 

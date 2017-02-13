@@ -75,7 +75,7 @@ export default class ContentEditController {
   }
 
   saveContent() {
-    if(this.isLoanOfficer){
+    if(this.isLoanOfficer && this.content.type == 'file'){
       //this.applyLoanStatusTraitToContent();
       //Use Object service to patch object with traits
       this.objectService.patchObject(this.content, this.getLoanStatusTraitToPatch()).then((data) => {
@@ -104,7 +104,7 @@ export default class ContentEditController {
     }
     else{
       this.objectService.updateObject(this.content).then(data => {
-        this.loggerService.showToast("Document updated");
+        this.loggerService.showToast("Update successful");
         this.dialog.hide();
       });
     }

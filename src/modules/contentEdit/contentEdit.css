@@ -3,11 +3,7 @@ md-dialog {
 }
 
 .md-radio-group-label-wrapper {
-  margin-bottom: 16px;
-}
-
-.md-radio-group-label {
-  position: relative !important;
+    margin-bottom: 40px;
 }
 
 .dialogdemoBasicUsage #popupContainer {
