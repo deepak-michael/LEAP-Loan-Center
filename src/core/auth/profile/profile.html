@@ -1,0 +1,46 @@
+<md-content class="profile md-padding">
+  <div class="breakpoint">
+    <div class="leap-module" ng-if="!vm.setupApp">
+      <h1>
+        User profile
+      </h1>
+
+      <form name="contactForm" flex="100" layout="column">
+        <md-input-container class="leap-fieldset">
+          <label>First Name:</label>
+          <input ng-model="vm.profile.firstName" disabled>
+        </md-input-container>
+        <md-input-container flex class="leap-fieldset">
+          <label>Last Name:</label>
+          <input ng-model="vm.profile.lastName" disabled>
+        </md-input-container>
+        <md-input-container flex class="leap-fieldset">
+          <label>Email:</label>
+          <input ng-model="vm.profile.email" disabled>
+        </md-input-container>
+        <md-input-container flex class="leap-fieldset">
+          <label>Roles:</label>
+          <input ng-model="vm.roles" disabled>
+        </md-input-container>
+      </form>
+    </div>
+    <div class="leap-module" ng-if="vm.setupApp">
+      <h1>
+        Welcome to the LEAP Loan Center
+      </h1>
+
+      <div ng-if="vm.appAdmin">
+        <p>Please click on the button below to complete the setup of the application.</p>
+        <md-button class="md-raised md-primary" type="submit" ng-click="vm.setupApplication()">
+          Setup Application</md-button>
+      </div>
+
+      <div>
+        <p ng-if="!vm.appAdmin">The application setup needs to be completed by an Administrator. Please contact your LEAP Subscription Administrator to complete the setup of the application.</p>
+      </div>
+
+      <!--<h1 class="md-subheader">Token data (from JWT)</h1>
+      <pre>{{vm.user | json}}</pre>-->
+    </div>
+  </div>
+</md-content>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1" />
+
+    <base href="<%= htmlWebpackPlugin.options.baseHref %>" />
+
+    <title data-ng-bind="title"></title>
+
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" type="text/css" />
+    <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  </head>
+
+  <body layout="row"
+    data-ng-cloak
+    data-ng-class="containerClass"
+  >
+    <div id="container" layout="column" role="main" flex>
+      <header id="header" data-ui-view="header"></header>
+
+      <md-content class="content-container" layout="column" flex md-scroll-y layout-fill
+        data-ui-view="content"
+      ></md-content>
+
+      <footer id="footer" data-ui-view="footer" class="app-footer"></footer>
+    </div>
+  </body>
+</html>

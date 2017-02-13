@@ -1,0 +1,27 @@
+<md-content class="md-padding" flex layout="column">
+    <div flex></div>
+
+    <div layout="row">
+        <div flex></div>
+
+        <div class="login md-padding md-whiteframe-z3">
+            <md-progress-circular ng-if="vm.loading" md-mode="indeterminate"></md-progress-circular>
+
+            <form name="loginForm" method="post" novalidate="novalidate" autocomplete="off" layout="column"
+                  data-ng-submit="vm.login()"
+                  data-ng-class="vm.loading ? 'opacity-50' : ''"
+            >
+                <h3 class="md-title text-center">Login</h3>
+
+
+                <md-button target="_self" href="/auth/provider" class="md-raised md-primary" type="submit"
+                           data-ng-disabled="vm.loading">
+                    Login to LEAP</md-button>
+            </form>
+        </div>
+
+        <div flex></div>
+    </div>
+
+    <div flex></div>
+</md-content>

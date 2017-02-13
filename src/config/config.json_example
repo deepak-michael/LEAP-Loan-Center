@@ -1,0 +1,9 @@
+/**
+ * Copy this file to 'config.json' and define all settings what your environment is using
+ *
+ * Also remember remove this comment block too as json doesn't support comments :D
+ */
+{
+  "TENANT_NAME": "your_leap_tenant_name",
+  "SUBSCRIPTION_NAME": "your_app_subscription_name"
+}

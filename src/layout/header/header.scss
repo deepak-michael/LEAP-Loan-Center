@@ -1,0 +1,458 @@
+/*@import "../profile/profile";
+@import "../menu/menu";
+@import "../link/link";*/
+
+/*begin:keshav's styles*/
+
+$leap-grid-size: 8px !default;
+$leap-asset-root: 'assets/';
+
+$leap-color-white: #FFF !default;
+$leap-color-fog: #F3F4F5 !default;
+$leap-color-smoke: #D4D8DE !default;
+$leap-color-stone: #98A4B5 !default;
+$leap-color-slate: #647286 !default;
+$leap-color-charcoal: #2E3033 !default;
+$leap-color-black: #000 !default;
+
+$leap-font-weight-light: 300 !default;
+$leap-font-weight-regular: 400 !default;
+$leap-font-weight-semi-bold: 600 !default;
+$leap-font-weight-bold: 700 !default;
+
+@function grid($factor:1){
+    @return $leap-grid-size * $factor;
+}
+
+@mixin border-radius($radius:$leap-grid-size/2){
+    -webkit-border-radius:$radius;
+    -moz-border-radius:$radius;
+    -ms-border-radius:$radius;
+    -o-border-radius:$radius;
+    border-radius:$radius;
+}
+
+
+@mixin box-shadow($depth:1){
+
+
+    @if $depth == 'none' {
+        -webkit-box-shadow:none;
+        -moz-box-shadow:none;
+        -ms-box-shadow:none;
+        -o-box-shadow:none;
+        box-shadow:none;
+    }
+    @else {
+        $color:rgba(46, 48, 51, (0.2 + ($depth * 0.05)));
+        -webkit-box-shadow:((0px + $depth) (0px + $depth)) (3px * $depth) $color;
+        -moz-box-shadow:((0px + $depth) (0px + $depth)) (3px * $depth) $color;
+        -ms-box-shadow:((0px + $depth) (0px + $depth)) (3px * $depth) $color;
+        -o-box-shadow:((0px + $depth) (0px + $depth)) (3px * $depth) $color;
+        box-shadow:((0px + $depth) (0px + $depth)) (3px * $depth) $color;
+    }
+}
+
+@mixin font($size:small, $color:null){
+    @if $size == xx-small {
+        font-weight:$leap-font-weight-regular;
+        font-size:10px;
+        line-height:16px;
+        text-transform:uppercase;
+    }
+    @else if $size == x-small {
+        font-weight:$leap-font-weight-semi-bold;
+        font-size:12px;
+        line-height:16px;
+        text-transform:uppercase;
+    }
+    @else if $size == small {
+        font-weight: $leap-font-weight-regular;
+        font-size:12px;
+        line-height:16px;
+    }
+    @else if $size == small-light {
+        font-weight: $leap-font-weight-light;
+        font-size:12px;
+        line-height:16px;
+    }
+    @else if $size == medium-bold {
+        font-weight:$leap-font-weight-semi-bold;
+        font-size:16px;
+        line-height:24px;
+        text-transform:uppercase;
+    }
+    @else if $size == medium {
+        font-weight:$leap-font-weight-regular;
+        font-size:16px;
+        line-height:24px;
+    }
+    @else if $size == large {
+        font-weight:$leap-font-weight-light;
+        font-size:20px;
+        line-height:24px;
+    }
+    @else if $size == x-large {
+        font-weight:$leap-font-weight-light;
+        font-size:24px;
+        line-height:32px;
+    }
+    @else if $size == xx-large {
+        font-weight:$leap-font-weight-light;
+        font-size:32px;
+        line-height:40px;
+    }
+    @else if $size == xxx-large {
+        font-weight:$leap-font-weight-light;
+        font-size:48px;
+        line-height:56px;
+    }
+
+    @if $color {
+        color:$color;
+    }
+}
+
+/*end:keshav's styles*/
+
+/*begin: profile.scss*/
+.leap-profile {
+    .name {
+        /*@include bg('../../app/common/icon/cheveron.png', center right);*/
+      background-repeat: no-repeat;
+      background-position: right center;
+      background-image: url("../../../src/common/icons/cheveron.png");
+        padding-right:grid(1.5);
+        max-width:grid(20);
+
+        span {
+            display:block;
+            overflow:hidden;
+            text-overflow:ellipsis;
+        }
+    }
+
+    .user {
+        display:flex;
+        margin:0 -(grid(3));
+        padding:grid(3);
+        text-transform:none;
+        cursor:default;
+
+        .profile {
+            padding:grid(0.25) 0 0 grid(2);
+
+            h5 {
+                max-width:grid(25);
+                overflow:hidden;
+                @include font(medium);
+                text-overflow:ellipsis;
+                white-space:nowrap;
+                color:$leap-color-charcoal;
+            }
+
+            p {
+                max-width:grid(25);
+                overflow:hidden;
+                @include font(small);
+                text-overflow:ellipsis;
+                white-space:nowrap;
+                color:$leap-color-slate;
+            }
+        }
+    }
+}
+/*end: profile.scss*/
+
+/*begin: menu.scss*/
+
+$leap-menu-background: $leap-color-white !default;
+$leap-menu-item-division: $leap-color-fog !default;
+
+$leap-menu-link-text: $leap-color-charcoal !default;
+$leap-menu-link-text--hover: $leap-color-slate !default;
+$leap-menu-link-text--active: $leap-color-stone !default;
+$leap-menu-link-text--disabled: $leap-color-stone !default;
+
+
+.leap-menu {
+    position:absolute;
+    z-index:999;
+    min-width:grid(32);
+    margin-top:grid(0.5);
+    padding:grid(3);
+    background:$leap-menu-background;
+    @include border-radius();
+    @include box-shadow(2);
+
+    &.hide {
+        display:none;
+    }
+
+    .leap-link {
+        display:block;
+        margin:0 -(grid(3)) !important;
+        padding:grid(3);
+        border-top:1px solid $leap-menu-item-division;
+        font-weight:$leap-font-weight-semi-bold;
+        color:$leap-menu-link-text;
+
+        &:hover,
+        &:focus {
+            color:$leap-menu-link-text--hover;
+        }
+
+        &:active {
+            color:$leap-menu-link-text--active;
+        }
+
+        &.disabled {
+            color:$leap-menu-link-text--disabled;
+        }
+    }
+}
+
+.leap-menu-handle {
+    font-weight: $leap-font-weight-bold;
+    color:$leap-menu-link-text;
+
+    &:hover,
+    &:focus {
+        color:$leap-menu-link-text--hover;
+    }
+
+    &:active {
+        color:$leap-menu-link-text--active;
+    }
+
+    &.disabled {
+        color:$leap-menu-link-text--disabled;
+    }
+}
+
+.leap-menu-item {
+    outline:none !important;
+
+    &:first-child {
+        margin-top:-(grid(3));
+        border-top:none;
+    }
+
+    &:last-child {
+        margin-bottom:-(grid(3));
+    }
+}
+
+/*end: menu.scss*/
+
+/*begin: link.scss*/
+
+$leap-color-primary: #2C95DD !default;
+$leap-color-primary-dark: darken($leap-color-primary,30%) !default;
+$leap-color-primary-light: lighten($leap-color-primary,10%) !default;
+$leap-color-primary-faded: lighten($leap-color-primary,30%) !default;
+
+$leap-link-text:$leap-color-primary !default;
+$leap-link-text--hover:$leap-color-primary-dark !default;
+$leap-link-text--active:$leap-color-primary-faded !default;
+$leap-link-text--disabled:$leap-color-primary-faded !default;
+
+$leap-link-gray-text:$leap-color-slate !default;
+$leap-link-gray-text--hover:$leap-color-charcoal !default;
+$leap-link-gray-text--active:$leap-color-stone !default;
+$leap-link-gray-text--disabled:$leap-color-stone !default;
+
+a {
+    text-decoration:none;
+    color:$leap-link-text;
+    transition:color 0.25s ease;
+
+    &:hover,
+    &:focus {
+        color:$leap-link-text--hover;
+        outline:none;
+
+        .leap-icon {
+            text-decoration:none;
+            color:inherit;
+        }
+    }
+
+    &:active {
+        color:$leap-link-text--active;
+
+        .leap-icon {
+            color:inherit;
+        }
+    }
+
+    &:disabled,
+    &.disabled {
+        color:$leap-link-text--disabled;
+        cursor:default;
+
+        .leap-icon {
+            color:inherit;
+        }
+    }
+
+    .leap-icon {
+        display:inline-block;
+        margin-left:20px;
+        font-size:inherit;
+        color:inherit;
+    }
+}
+
+.leap-link {
+    position:relative;
+    display:inline-block;
+    @include font();
+    font-weight:$leap-font-weight-bold;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    white-space:nowrap;
+    cursor:pointer;
+    transition:color 0.25s ease;
+
+    &:hover,
+    &:focus {
+        text-decoration:none;
+    }
+
+    &.gray {
+        color:$leap-link-gray-text;
+
+        &:hover,
+        &:focus {
+            color:$leap-link-gray-text--hover;
+        }
+
+        &:active {
+            color:$leap-link-gray-text--active;
+        }
+
+        &:disabled,
+        &.disabled {
+            color:$leap-link-gray-text--disabled;
+        }
+    }
+}
+/*end: link.scss*/
+
+/*begin: avatar.scss*/
+$leap-avatar-background:$leap-color-stone !default;
+$leap-avatar-text:$leap-color-white !default;
+
+.leap-avatar {
+  display: flex;
+  align-items:center;
+  justify-content: center;
+  height: grid(6);
+  width: grid(6);
+  background:$leap-avatar-background;
+  border-radius: 4em;
+  cursor: default;
+
+  p {
+    margin:0;
+    padding:0;
+    letter-spacing:0;
+    line-height:0.8em;
+    font-weight:$leap-font-weight-bold;
+    font-size:12px;
+    color:$leap-avatar-text;
+  }
+}
+/*end: avatar.scss*/
+
+.md-button {
+  font-size: 20px;
+}
+
+.navbar-buttons{
+  font-size:16px !important;
+}
+
+.app-header {
+  position:fixed;
+  width:100%;
+  height: 80px;
+  z-index:5;
+  background: #ffffff !important;
+  border-bottom:1px solid #D4D8DE;
+
+  .content {
+    margin: 7px 0px;
+    display:flex;
+
+    .app-branding {
+      flex:2;
+      display:flex;
+
+      h1 {
+        display:inline-block;
+
+        a {
+          display:inline-block;
+          background-repeat: no-repeat;
+          background-position: center center;
+          overflow:hidden;
+          height:29px;
+          width:164px;
+          background-image: url("../../../src/common/icons/dell-emc-logo.png");
+          text-indent:-1000px;
+        }
+      }
+
+      .dev-center {
+        /*@include font(medium);*/
+        margin: 20px 0 0 20px;
+        text-transform:uppercase;
+        color: #647286;
+        white-space:nowrap;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 24px;
+      }
+    }
+    .app-nav {
+      flex:1;
+      margin-top:5px;
+      /*@include font(medium);*/
+
+      ul {
+        display:flex;
+
+        li {
+          flex:1;
+
+          a {
+            margin:0 grid(3);
+            display:block;
+            white-space:nowrap;
+            text-align:center;
+            color:#647286;
+
+            &:hover,
+            &:focus {
+              color:#2E3033;
+            }
+
+            &:active {
+              color:#98A4B5;
+            }
+
+            &.selected {
+              color:#2E3033;
+            }
+          }
+        }
+      }
+    }
+
+    .app-user {
+      margin:10px 0 0 grid(3);
+    }
+  }
+}

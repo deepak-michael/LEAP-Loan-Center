@@ -1,0 +1,58 @@
+<div class="app-header">
+    <div class="breakpoint">
+        <div class="content">
+            <div class="app-branding">
+                <div><h1><a href="#" ng-click="navigate('/')">DellEMC</a></h1></div>
+                <p class="dev-center"><span class="dev-center" translate="">Loan Center</span></p>
+            </div>
+            <div class="app-nav">
+                <!-- fill up the space between left and right area -->
+                <div flex layout="row">
+                </div>
+                <div layout="row" ng-if="isAuthenticated" align-content="flex-end">
+                    <div data-ng-repeat="item in vm.items">
+                        <md-button class="navbar-buttons"
+                                   ng-if="item.state && item.items.length === 0"
+                                   ng-click="vm.menuItemService.goToPage(item)"
+                                   ng-class="{'md-primary': vm.isActive(item.state)}"
+                        >
+                            {{::item.title}}
+                        </md-button>
+
+                        <md-button class="navbar-buttons"
+                                   ng-if="!item.state && item.items.length === 0"
+                                   ng-disabled="true"
+                        >
+                            {{::item.title}}
+                        </md-button>
+                    </div>
+                    <div>
+                        <div class="leap-profile">
+                            <a class="name leap-link" style="top: 16px; padding-left: 42%;" ng-click="toggle()">
+                                <span style="font-size: 16px;color: black;font-weight: bold;letter-spacing: 0.16px;">{{vm.profile.firstName}} {{vm.profile.lastName}}</span>
+                            </a>
+                            <div class="leap-menu" align="bottom-right" ng-class="{ hide:!opened }"
+                                 style="top: 50px; right: 8%">
+                                <div class="leap-menu-item">
+                                    <div class="user">
+                                        <div class="leap-avatar" user="user" style="background: rgb(255, 167, 38);"><p>
+                                            {{getUserInitials()}}</p></div>
+                                        <div class="profile" style="margin: 0 auto;">
+                                            <h5 style="margin: 0 auto;">{{vm.profile.firstName}}
+                                                {{vm.profile.lastName}}</h5>
+                                            <p>{{vm.profile.email}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="leap-menu-item">
+                                    <a class="leap-link" ng-click="vm.logout()"><span>Sign Out</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

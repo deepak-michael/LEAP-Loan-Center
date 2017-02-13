@@ -1,0 +1,35 @@
+<md-dialog>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Create Loan Folder</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="vm.cancel()">
+                <md-icon class="material-icons">close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <div class="md-padding" flex="100">
+        <md-dialog-content>
+            <form name="contactForm" flex="100" layout="column">
+                <md-input-container>
+                    <label>Name:</label>
+                    <input ng-model="vm.newFolder.name" required>
+                </md-input-container>
+                <md-input-container flex>
+                    <label>Description:</label>
+                    <input ng-model="vm.newFolder.description" required>
+                </md-input-container>
+
+            </form>
+        </md-dialog-content>
+    </div>
+
+    <md-dialog-actions layout="row">
+        <span flex></span>
+        <md-button class="md-primary" ng-click="vm.saveFolder()">
+            Save
+        </md-button>
+    </md-dialog-actions>
+
+</md-dialog>

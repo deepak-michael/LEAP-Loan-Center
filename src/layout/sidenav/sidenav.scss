@@ -1,0 +1,39 @@
+$color1: rgba(0, 0, 0, .2);
+$color2: rgba(0, 0, 0, .1);
+
+md-sidenav {
+  md-menu-item {
+    border-bottom: 1px solid $color1;
+
+    &.sub-menu {
+      border-color: $color2;
+
+      &:last-child {
+        border-bottom: 1px solid $color1;
+      }
+    }
+
+    .md-button {
+      font-size: 14px;
+    }
+  }
+
+  .md-button {
+    &.md-primary {
+      /*font-weight: bold;*/
+    }
+
+    i {
+      position: relative;
+      top: 2px;
+    }
+  }
+
+  .sub-menu {
+    .md-button {
+      padding-left: 32px;
+    }
+  }
+
+  width: 280px;
+}

@@ -1,0 +1,146 @@
+<md-content class="about md-padding">
+    <div class="breakpoint">
+        <div class="leap-module" ng-if="!vm.setupApp">
+            <h1>
+                LEAP Sample App for usage of CMS APIs
+            </h1>
+
+            <ul style="margin-bottom: 10px; font-size: 14px;">
+                <li>Creating the Developer Center application</li>
+                <ul style="margin-bottom: 10px; font-size: 14px;">
+                    <li>Sign up for Developer Center from the link at http://documentum.opentext.com/leap/</li>
+                    <li>Login to the Developer Center using the link in the welcome email for Developer Center</li>
+                    <li>Create an application in Developer Center</li>
+                    <ul style="margin-bottom: 10px; font-size: 14px;">
+                        <li>The application base url is to be the host name where the web application is to be hosted</li>
+                        <li>Note the App key and App secret that are generated once the application is created</li>
+                        <li>Also note the subscription name for the application</li>
+                        <li>Note that the application is configured to consume CMS APIs</li>
+                    </ul>
+
+                    <li>Create user roles for the application created in Developer Center</li>
+                    <ul style="margin-bottom: 10px; font-size: 14px;">
+                        <li>Contact the deployer admin to create
+                            the following roles for the application earlier created in Developer Center:</li>
+                        <li>loan_applicant</li>
+                        <li>loan_officer</li>
+                    </ul>
+
+                    <li>Create Users in the system using Admin Center</li>
+                    <ul style="margin-bottom: 10px; font-size: 14px;">
+                        <li>Login to Admin Center using the link in the welcome email for Admin Center</li>
+                        <li>Create loan applicant and loan officers for the application created in Developer Center</li>
+                        <li>Bob (loan applicant), Sue (loan applicant)</li>
+                        <li>Joe (loan officer)</li>
+                    </ul>
+                </ul>
+                <li>Setting up the Loan Center web application</li>
+                <ul style="margin-bottom: 10px; font-size: 14px;">
+                    <li>Login to the Loan application with the user credentials of the application_admin</li>
+                    <ul style="margin-bottom: 10px; font-size: 14px;">
+                        <li>The user that signed up and created the application in Developer Center has the application_admin role</li>
+                    </ul>
+
+                    <li>The user is prompted to setup the application</li>
+                    <li>The following types and objects are created in LEAP CMS when setup is initiated</li>
+                    <ul style="margin-bottom: 10px; font-size: 14px;">
+                        <li>Loan application acl (loanApplication)</li>
+                        <li>Loan approved acl (loanApproved)</li>
+                    </ul>
+                    <li>Traits in the system</li>
+                    <ul style="margin-bottom: 10px; font-size: 14px;">
+                        <li>Loan Status (loanstatus)</li>
+                        <li>Loan Review Status (loanreviewstatus)</li>
+                    </ul>
+                    <li>A folder under the root directory - Loan requests</li>
+                </ul>
+
+                <li>Use case flow</li>
+                <ul style="margin-bottom: 10px; font-size: 14px;">
+
+                    <li>Loan applicant Bob logs into the system to create a loan request</li>
+
+                    <ul style="margin-bottom: 10px; font-size: 14px;">
+                        <li>Bob's profile view is shown as he logs in showing that the role is loan_applicant
+                        </li>
+                        <li>In the navigation menu Bob clicks on 'Loans'</li>
+                        <li>Options are available for Bob to view current Loans in the system (Loans) or browse the
+                            repository (Home)
+                            (API call here to get root folder)
+                        </li>
+                        <li>Bob clicks on Home (API call here for /folders/:id)</li>
+                        <li>Table below shows the items under the root folder</li>
+                        <li>Bob uses the context menu option in a row for a folder and clicks on Import content/Create
+                            loan
+                        </li>
+                        <li>A dialog is displayed that allows the user to create a loan request with two tabs</li>
+                        <ul style="margin-bottom: 10px; font-size: 14px;">
+                            <li>Bob enters fields and uploads a loan document (API call here to POST
+                                /blobservice/content)
+                            </li>
+                            <li>Bob clicks on Save which is enabled if all fields are entered (API call here to create
+                                file and attach loan trait)
+                            </li>
+                        </ul>
+                        <li>Current folder is refreshed with new loan file</li>
+                        <li>Bob clicks on the content menu option in the row of the item to notice View and Edit options
+                            available
+                        </li>
+                        <li>Bob logs out</li>
+                    </ul>
+
+                    <li>Loan applicant Sue logs into the system to view loan requests</li>
+
+                    <ul style="margin-bottom: 10px; font-size: 14px;">
+                        <li>Sue's profile view is shown as she logs in showing that the role is loan_applicant
+                        </li>
+                        <li>In the navigation menu Sue clicks on 'Loans'</li>
+                        <li>Sue clicks on Loans (API call here for /files/ with filter for loan trait and owner as
+                            logged in user)
+                        </li>
+                        <li>Sue does not see Bob's newly created loan document</li>
+                        <li>Sue logs lout</li>
+                    </ul>
+
+
+                    <li>Loan officer Joe logs into the system</li>
+
+                    <ul style="margin-bottom: 10px; font-size: 14px;">
+                        <li>Joe's profile is shown indicating the user is a loan officer in the system</li>
+                        <li>In the navigation menu Joe clicks on 'Loans'</li>
+                        <li>Joe clicks on 'Loans' to see the loans in the system (API request here - filter on trait
+                            presence)
+                        </li>
+                        <li>Joe sees entry from Bob with a status of unapproved</li>
+                        <li>Joe clicks on the content menu option in the row to Edit/Review the item</li>
+                        <li>A dialog is displayed that allows the user to review the loan request with three tabs</li>
+                        <ul>
+                            <li>(API request - get permission acl to apply on approval - loanApproved)</li>
+                            <li>(API request - get trait to apply on review - loanreviewstatus)</li>
+                        </ul>
+                        <li>Joe reviews loan info in the two tabs and navigates to the third tab that has review info
+                        </li>
+                        <li>Joe approves the document with review comments (required) and clicks 'Save'</li>
+                        <li>List is refreshed and indicates change in status</li>
+                        <li>Joe logs out</li>
+                    </ul>
+
+                    <li>Loan applicant Bob logs into the system to check review status</li>
+                    <ul style="margin-bottom: 10px; font-size: 14px;">
+                        <li>In the navigation menu Bob clicks on 'Loans'</li>
+                        <li>Bob clicks on 'Loans' to see his loans in the system (API request here - filter on trait
+                            presence)
+                        </li>
+                        <li>Bob sees loan has been updated with a status of approved</li>
+                        <li>Bob clicks on the content menu option in the row of the item</li>
+                        <li>Bob notices the edit option is not present on the item anymore</li>
+                        <li>Bob clicks the view option</li>
+                        <li>A dialog is displayed that allows the user to review the loan request with three tabs showing loan info and the review
+                            comments from Bob
+                        </li>
+                    </ul>
+                </ul>
+            </ul>
+        </div>
+    </div>
+</md-content>

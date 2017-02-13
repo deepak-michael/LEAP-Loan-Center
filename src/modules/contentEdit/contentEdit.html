@@ -1,0 +1,129 @@
+<md-dialog>
+  <md-toolbar>
+    <div class="md-toolbar-tools">
+      <h2>{{vm.displayHeader}}</h2>
+      <span flex></span>
+      <md-button class="md-icon-button" ng-click="vm.cancel()">
+        <md-icon class="material-icons">close</md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+
+  <div class="md-padding" flex="100">
+    <md-dialog-content>
+      <md-tabs md-dynamic-height md-border-bottom>
+        <md-tab label="Item">
+          <form name="contentForm" flex="100" layout="column">
+            <md-input-container>
+              <label>Name:</label>
+              <input ng-model="vm.content.name" required>
+            </md-input-container>
+            <md-input-container flex>
+              <label>Description:</label>
+              <input ng-model="vm.content.description" required>
+            </md-input-container>
+
+            <div flex ng-if="vm.content.type == 'file'">
+              <md-input-container flex class="md-block">
+                <input type="text" ng-model="vm.loanFile.name" disabled>
+                <!--<div class="hint">Download</div>-->
+              </md-input-container>
+              <div>
+                <md-button id="downloadButton" class="md-fab md-mini"
+                           ng-click="vm.downloadFile()">
+                  <md-icon class="material-icons">file_download</md-icon>
+                </md-button>
+              </div>
+            </div>
+
+          </form>
+        </md-tab>
+        <md-tab label="Loan info" ng-hide="vm.content.type == 'folder'">
+          <form name="loanForm" flex="100" layout="row">
+            <div layout="column" flex="50">
+              <md-input-container>
+                <label>First Name:</label>
+                <input ng-model="vm.loanTrait.firstname" required>
+              </md-input-container>
+              <md-input-container>
+                <label>Last Name:</label>
+                <input ng-model="vm.loanTrait.lastname" required>
+              </md-input-container>
+              <md-input-container>
+                <label>Address Line 1:</label>
+                <input ng-model="vm.loanTrait.addressLine1" required>
+              </md-input-container>
+              <md-input-container>
+                <label>Address Line 2:</label>
+                <input ng-model="vm.loanTrait.addressLine2" required>
+              </md-input-container>
+              <md-input-container flex>
+                <label>City:</label>
+                <input ng-model="vm.loanTrait.city" required>
+              </md-input-container>
+            </div>
+            <div layout="column" flex="50">
+              <md-input-container flex>
+                <label>State:</label>
+                <input ng-model="vm.loanTrait.state" required>
+              </md-input-container>
+              <md-input-container flex>
+                <label>Zip code:</label>
+                <input ng-model="vm.loanTrait.zipcode" required>
+              </md-input-container>
+              <md-input-container flex>
+                <label>Loan amount:</label>
+                <input ng-model="vm.loanTrait.loanAmount" required>
+              </md-input-container>
+              <md-input-container flex>
+                <label>Loan term:</label>
+                <input ng-model="vm.loanTrait.loanTerm" required>
+              </md-input-container>
+              <md-input-container flex>
+                <label class="ng-hide" >Loan term:</label>
+                <input class="ng-hide">
+              </md-input-container>
+
+            </div>
+          </form>
+        </md-tab>
+        <md-tab label="Approval" ng-hide="vm.content.type == 'folder'">
+          <form name="approvalForm" flex="100" layout="column">
+            <md-input-container>
+
+              <md-radio-group ng-model="vm.loanStatus.isApproved" ng-required="vm.isLoanOfficer" ng-disabled="!vm.isLoanOfficer">
+                <div class="md-radio-group-label-wrapper">
+                  <label class="md-radio-group-label">Is Approved:</label>
+                </div>
+                <md-radio-button ng-value="true">
+                  Yes
+                </md-radio-button>
+                <md-radio-button ng-value="false">
+                  No
+                </md-radio-button>
+              </md-radio-group>
+            </md-input-container>
+            <md-input-container flex>
+              <label>Remarks:</label>
+              <input ng-model="vm.loanStatus.remarks" ng-required="vm.isLoanOfficer" ng-disabled="!vm.isLoanOfficer">
+            </md-input-container>
+            <md-input-container flex>
+              <label>Reviewer:</label>
+              <input ng-model="vm.loanStatus.reviewer" disabled>
+            </md-input-container>
+
+          </form>
+        </md-tab>
+
+      </md-tabs>
+    </md-dialog-content>
+  </div>
+
+  <md-dialog-actions layout="row">
+    <span flex></span>
+    <md-button class="md-primary" ng-disabled="contentForm.$invalid || loanForm.$invalid || approvalForm.$invalid" ng-click="vm.saveContent()">
+      Save
+    </md-button>
+  </md-dialog-actions>
+
+</md-dialog>

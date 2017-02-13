@@ -1,0 +1,8 @@
+md-dialog {
+    min-width: 50%;
+}
+
+fieldset {
+  border-width: 0;
+  padding: 0;
+}

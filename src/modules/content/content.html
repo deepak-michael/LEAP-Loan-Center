@@ -1,0 +1,121 @@
+<div ng-cloak>
+    <md-content class="md-padding">
+        <md-tabs md-dynamic-height="" md-border-bottom="">
+            <md-tab label="Loan Documents" ng-click="vm.showLoans()">
+                <md-content class="md-padding">
+                    <h1 hide-sm hide-xs class="md-display-2 loan-doc-header">Loan Documents</h1>
+
+                    <div class="loans" ng-model="vm.selected">
+                        <div class="loan" ng-repeat="content in vm.contentlist | orderBy:createTime:attrOrder">
+                            <div class="loan-icon">
+                                <div class="inner">
+                                    <ng-md-icon ng-if="content.type == 'folder'" icon='folder'></ng-md-icon>
+                                    <ng-md-icon ng-if="content.type == 'file'" icon='insert_drive_file'></ng-md-icon>
+                                    <ng-md-icon ng-if="content.type == 'object'" icon='assignment'></ng-md-icon>
+                                </div>
+                            </div>
+
+                            <div class="details">
+                                <h5><a href="#" class="content-name"
+                                       ng-click="vm.showItems(content)">{{content.name}}</a></h5>
+                                <p><span translate></span>Description: {{content.description}}</p>
+                                <p class="owner"><span translate></span>Owner: {{content.owner}}</p>
+                                <p class="date-updated"><span translate>Date Updated: </span>{{content.updateTime |
+                                    date:'yyyy-MM-dd HH:mm:ss Z'}}</p>
+                                <p class="approval-status" ng-hide="!vm.showingLoanData"><span translate>Status: </span>{{content.traits.loanreviewstatus.statustrait.isApproved
+                                    == true ? 'Approved' : 'Not Approved'}}</p>
+                            </div>
+                            <div class="actions">
+                                <div class="inner" ng-if="content.type == 'file'" >
+                                    <a href="" ng-click="vm.viewItem(content)">
+                                        <ng-md-icon icon="remove_red_eye" aria-label="View" tool-tip="View"></ng-md-icon>
+                                        <md-tooltip md-direction="bottom">View</md-tooltip>
+                                    </a>
+                                </div>
+                                <div class="inner" ng-if="content.acl != vm.loanApprovalAcl.id">
+                                    <a href="" ng-click="vm.showItemDialog(content, $event)">
+                                        <ng-md-icon icon="edit" aria-label="Review"></ng-md-icon>
+                                        <md-tooltip md-direction="bottom">Review</md-tooltip>
+                                    </a>
+                                </div>
+                                <div class="inner" ng-if="content.type == 'folder'">
+                                    <a href="" ng-click="vm.importDialog(content, $event)">
+                                        <ng-md-icon icon="note_add" aria-label="Create Loan Content"></ng-md-icon>
+                                        <md-tooltip md-direction="bbttom">Create Loan Content</md-tooltip>
+                                    </a>
+                                </div>
+                                <div class="inner" ng-if="content.type == 'folder'">
+                                    <a href="" ng-click="vm.createFolder(content, $event)">
+                                        <ng-md-icon icon="create_new_folder" aria-label="Create Folder"></ng-md-icon>
+                                        <md-tooltip md-direction="bottom">Create Folder</md-tooltip>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </md-content>
+            </md-tab>
+            <md-tab label="Home" ng-disabled="!vm.rootFolder" ng-click="vm.showHomeFolder()">
+                <md-content class="md-padding">
+                    <h1 hide-sm hide-xs class="md-display-2 loan-doc-header">
+                        <span>{{vm.currentFolderName}}</span>
+                        <ng-md-icon icon='create_new_folder' class="create-folder-icon"
+                                    ng-click="vm.createFolder(vm.currentFolder, $event)"></ng-md-icon>
+                    </h1>
+                    <div class="loans" ng-model="vm.selected">
+                        <div class="loan" ng-repeat="content in vm.contentlist | orderBy:createTime:attrOrder">
+                            <div class="loan-icon">
+                                <div class="inner">
+                                    <ng-md-icon ng-if="content.type == 'folder'" icon='folder'></ng-md-icon>
+                                    <ng-md-icon ng-if="content.type == 'file'" icon='insert_drive_file'></ng-md-icon>
+                                    <ng-md-icon ng-if="content.type == 'object'" icon='assignment'></ng-md-icon>
+                                </div>
+                            </div>
+
+                            <div class="details">
+                                <h5><a href="#" class="content-name"
+                                       ng-click="vm.showItems(content)">{{content.name}}</a></h5>
+                                <p><span translate></span>Description: {{content.description}}</p>
+                                <p class="owner"><span translate></span>Owner: {{content.owner}}</p>
+                                <p class="date-updated"><span translate>Date Updated: </span>{{content.updateTime |
+                                    date:'yyyy-MM-dd HH:mm:ss Z'}}</p>
+                                <p class="approval-status" ng-hide="!vm.showingLoanData"><span translate>Status: </span>{{content.traits.loanreviewstatus.statustrait.isApproved
+                                    == true ? 'Approved' : 'Not Approved'}}</p>
+                            </div>
+                            <div class="actions">
+                                <div class="inner" ng-if="content.type == 'file'" >
+                                    <a href="" ng-click="vm.viewItem(content)">
+                                        <ng-md-icon icon="remove_red_eye" aria-label="View" tool-tip="View"></ng-md-icon>
+                                        <md-tooltip md-direction="bottom">View</md-tooltip>
+                                    </a>
+                                </div>
+                                <div class="inner" ng-if="content.acl != vm.loanApprovalAcl.id">
+                                    <a href="" ng-click="vm.showItemDialog(content, $event)">
+                                        <ng-md-icon icon="edit" aria-label="Review"></ng-md-icon>
+                                        <md-tooltip md-direction="bottom">Review</md-tooltip>
+                                    </a>
+                                </div>
+                                <div class="inner" ng-if="content.type == 'folder'">
+                                    <a href="" ng-click="vm.importDialog(content, $event)">
+                                        <ng-md-icon icon="note_add" aria-label="Create Loan Content"></ng-md-icon>
+                                        <md-tooltip md-direction="bbttom">Create Loan Content</md-tooltip>
+                                    </a>
+                                </div>
+                                <div class="inner" ng-if="content.type == 'folder'">
+                                    <a href="" ng-click="vm.createFolder(content, $event)">
+                                        <ng-md-icon icon="create_new_folder" aria-label="Create Folder"></ng-md-icon>
+                                        <md-tooltip md-direction="bottom">Create Folder</md-tooltip>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </md-content>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>
+
+
+
+
