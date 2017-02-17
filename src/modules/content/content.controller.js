@@ -32,6 +32,7 @@ export default class ContentController {
     })
     this.user = _profileData;
     this.roles = UserService.getRoles(false);
+    this.loancontentlist = [];
     this.contentlist = [];
 
     //find out the acl id for approved loans
@@ -217,7 +218,7 @@ export default class ContentController {
   showLoans() {
     var user = this.user;
     var me = this;
-    this.contentlist = [];
+    this.loancontentlist = [];
     if(this.roles.includes('loan_officer')) {
       user = {};
     }
@@ -229,7 +230,7 @@ export default class ContentController {
         return item;
       });
       this.showingLoanData = true;
-      this.contentlist = itemsWithCanEdit;
+      this.loancontentlist = itemsWithCanEdit;
     })
   }
 

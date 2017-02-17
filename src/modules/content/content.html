@@ -1,12 +1,12 @@
 <div ng-cloak>
-    <md-content class="md-padding">
+    <md-content class="md-padding loan-content">
         <md-tabs md-dynamic-height="" md-border-bottom="">
             <md-tab label="Loan Documents" ng-click="vm.showLoans()">
                 <md-content class="md-padding">
                     <h1 hide-sm hide-xs class="md-display-2 loan-doc-header">Loan Documents</h1>
 
                     <div class="loans" ng-model="vm.selected">
-                        <div class="loan" ng-repeat="content in vm.contentlist | orderBy:createTime:attrOrder">
+                        <div class="loan" ng-repeat="content in vm.loancontentlist | orderBy:createTime:attrOrder">
                             <div class="loan-icon">
                                 <div class="inner">
                                     <ng-md-icon ng-if="content.type == 'folder'" icon='folder'></ng-md-icon>
@@ -22,7 +22,7 @@
                                 <p class="owner"><span translate></span>Owner: {{content.owner}}</p>
                                 <p class="date-updated"><span translate>Date Updated: </span>{{content.updateTime |
                                     date:'yyyy-MM-dd HH:mm:ss Z'}}</p>
-                                <p class="approval-status" ng-hide="!vm.showingLoanData"><span translate>Status: </span>{{content.traits.loanreviewstatus.statustrait.isApproved
+                                <p class="approval-status"><span translate>Status: </span>{{content.traits.loanreviewstatus.statustrait.isApproved
                                     == true ? 'Approved' : 'Not Approved'}}</p>
                             </div>
                             <div class="actions">
@@ -55,12 +55,20 @@
                     </div>
                 </md-content>
             </md-tab>
-            <md-tab label="Home" ng-disabled="!vm.rootFolder" ng-click="vm.showHomeFolder()">
+            <md-tab label="Home" ng-click="vm.showHomeFolder()">
                 <md-content class="md-padding">
                     <h1 hide-sm hide-xs class="md-display-2 loan-doc-header">
                         <span>{{vm.currentFolderName}}</span>
-                        <ng-md-icon icon='create_new_folder' class="create-folder-icon"
-                                    ng-click="vm.createFolder(vm.currentFolder, $event)"></ng-md-icon>
+                        <div class="actions">
+                            <div class="inner">
+                                <a href="" ng-click="vm.createFolder(content, $event)">
+                                    <ng-md-icon icon="create_new_folder" aria-label="Create Folder"></ng-md-icon>
+                                    <md-tooltip md-direction="right">Create Folder</md-tooltip>
+                                </a>
+                            </div>
+                        </div>
+                        <!--<ng-md-icon icon='create_new_folder' class="create-folder-icon"
+                                    ng-click="vm.createFolder(vm.currentFolder, $event)"></ng-md-icon>-->
                     </h1>
                     <div class="loans" ng-model="vm.selected">
                         <div class="loan" ng-repeat="content in vm.contentlist | orderBy:createTime:attrOrder">
@@ -79,8 +87,6 @@
                                 <p class="owner"><span translate></span>Owner: {{content.owner}}</p>
                                 <p class="date-updated"><span translate>Date Updated: </span>{{content.updateTime |
                                     date:'yyyy-MM-dd HH:mm:ss Z'}}</p>
-                                <p class="approval-status" ng-hide="!vm.showingLoanData"><span translate>Status: </span>{{content.traits.loanreviewstatus.statustrait.isApproved
-                                    == true ? 'Approved' : 'Not Approved'}}</p>
                             </div>
                             <div class="actions">
                                 <div class="inner" ng-if="content.type == 'file'" >
