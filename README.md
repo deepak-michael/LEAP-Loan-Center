@@ -20,18 +20,16 @@ Once approved the loan request is read-only to the loan applicant.
 
 ##Setup
 ###Creating the LEAP app in Developer Center
-Before installing the application, sign up for a LEAP developer account at 
-http://documentum.opentext.com/leap/ 
-
-Once signed up as a LEAP user, a welcome email will be sent with a link to sign in to the Developer Center. 
-Use this link to sign in to Developer Center and create a new application by providing details about the application. 
-######Note the generated app key, app secret and the generated subscription name (see subscription url).
-  
-As an outcome of signing up for Developer center the user is also sent an email with a link to Admin Center. 
-- Log in using the link for an Admin Center 'Deployment Administrator' and create two application roles
+Before installing the application, it is required to contact a LEAP provision admin to sign up 
+and have a new developer LEAP application created, requesting for an app key and secret.
+The application will also need to have the following roles created by the LEAP admin:
    - loan_applicant
    - loan_officer
-- Log in using the link for an Admin Center 'Subscription Administrator' and create two users
+
+The registered user is provided with an app key, app secret and a subscription for the new application.
+
+The user is sent an email with a link to Admin Center. 
+- Log in using the link for Admin Center and create two users
     - Assign the first user the loan_applicant role
     - Assign the second user the loan_officer role
     - You could skip adding new users and just assign these roles to 
@@ -55,7 +53,7 @@ for the LEAP authentication to be successful
 ## Setting up definitions for the app
 The application requires trait definitions and permissions defined in the system for the application to work as expected. 
 To get this setup process completed, fire up the app. 
-The url to the app would be in the format - http://host-name:3434
+The url to the app would be in the format - http://host-name:3000
 
 Log into the application using the credentials of the user that created the application in Developer Center. 
 The first time the user logs in, the profile page prompts the user to complete setup of the application.
