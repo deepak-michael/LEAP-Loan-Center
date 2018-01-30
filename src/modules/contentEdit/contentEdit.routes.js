@@ -11,7 +11,7 @@ export default function routing(RouterHelper) {
     const states = [{
         state: 'modules.contentEdit',
         config: {
-            url: '/',
+            url: '/contentedit',
             title: 'ContentEdit',
             data: {
                 access: UserRoles.ROLE_LOGGED,

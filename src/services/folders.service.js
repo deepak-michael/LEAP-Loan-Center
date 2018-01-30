@@ -13,44 +13,46 @@ export default class FolderService {
         if(this.config.API_URL === "/") {
             var a = document.createElement('a');
             a.href = url;
-            return url.replace(a.host, window.location.host);
+            var urlMod = url.replace(a.protocol, window.location.protocol);
+            return urlMod.replace(a.host, window.location.host);
         }
     }
 
     fetchRootFolder() {
-        var rootFolderFilter ="parentFolder is null";
-        var filter = "?filter=" + rootFolderFilter;
-        var url = this.allFoldersEndpoint + filter;
+        var rootFolderFilter ="id = '0'";
+        var filter = "filter=" + rootFolderFilter;
+        filter = encodeURIComponent(filter);
+        //var url = this.allFoldersEndpoint + "?" + filter;
+        var url = this.allFoldersEndpoint + "/0";
 
-        var httpPromise = this.$http.get(url);
         return this.$http.get(url).then( response => {
-            return response.data._embedded ? response.data._embedded.itemResourceList : [];
+            return response.data;
         })
     }
 
     //split this up to make it more readable for MMTM clients
     fetchContent(folder: Object = {}, user: Object = {}) {
         var url;
-        if (folder._links && folder._links.items) {
-            url = folder._links.items.href;
+        if (folder._links && folder._links['urn:eim:linkrel:objects']) {
+            url = folder._links['urn:eim:linkrel:objects'].href;
             url = this.cleanUrlx(url);
         } else {
             url = `${this.config.API_URL}folders`;
         }
         if(user && user.email) {
-          var ownerFilter = "owner = '"+user.email+"'";
-          var filter =  "?filter=" + ownerFilter;
-          url += filter;
+          var ownerFilter = "owner %3D '"+user.email+"'";
+          var filter =  "filter=" + ownerFilter;
+          url = url + "?" + filter;
         }
         return this.$http.get(url).then( response => {
-            return response.data._embedded ? response.data._embedded.itemResourceList : [];
+            return response.data._embedded ? response.data._embedded.collection : [];
         })
     }
 
     addItem(folder: Object, item: Object) {
         var url;
-        if (folder._links && folder._links.items) {
-            url = folder._links.items.href;
+        if (folder._links && folder._links['urn:eim:linkrel:objects']) {
+            url = folder._links['urn:eim:linkrel:objects'].href;
             url = this.cleanUrlx(url);
         }
 

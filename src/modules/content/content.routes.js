@@ -11,7 +11,7 @@ export default function routing(RouterHelper) {
     const states = [{
         state: 'modules.content',
         config: {
-            url: '/',
+            url: '/loans',
             title: 'Content',
             data: {
                 access: UserRoles.ROLE_LOGGED,

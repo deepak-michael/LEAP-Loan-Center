@@ -14,6 +14,7 @@ export default class ProfileController {
     this.folderService = FolderService;
     this.profile = _profileData;
     this.roles = UserService.getRoles(false);
+    this.tenant = UserService.getTenant();
     var profileController = this;
 
     //find out the acl id for applied loans
@@ -65,7 +66,7 @@ export default class ProfileController {
                   },
                   {
                       "name": "loan_officer",
-                      "permits": ["browse", "read","comment", "print","annotate","change_location"]
+                      "permits": ["browse", "read","write","delete","comment", "print","annotate","change_location"]
                   }
               ]
           },
@@ -80,7 +81,7 @@ export default class ProfileController {
                   },
                   {
                       "name": "loan_officer",
-                      "permits": ["browse", "read","comment", "print","annotate","change_location"]
+                      "permits": ["browse", "read","write","delete","comment", "print","annotate","change_location"]
                   }
               ]
           }
@@ -89,56 +90,60 @@ export default class ProfileController {
           "traitDefinitions":
       [
           {
+              "name": "count",
+              "attributes": [
+                  {
+                      "name": "loans",
+                      "dataType": "integer"
+                  },
+                  {
+                      "name": "totalAmount",
+                      "dataType": "integer"
+                  }
+              ]
+          },
+          {
               "name": "loan",
-              "displayName": "Loan",
-              "attributes": [{
-                  "name": "firstname",
-                  "dataType": "string",
-                  "size": 100,
-                  "displayName": "First Name"
-              },
+              "attributes": [
                   {
-                      "name": "lastname",
+                      "name": "buyer",
                       "dataType": "string",
-                      "size": 100,
-                      "displayName": "Last Name"
-                  },
-                  {
-                      "name": "addressLine1",
-                      "dataType": "string",
-                      "displayName": "Address Line 1"
-                  },
-                  {
-                      "name": "addressLine2",
-                      "dataType": "string",
-                      "displayName": "Address Line 2"
-                  },
-                  {
-                      "name": "city",
-                      "dataType": "string",
-                      "displayName": "City"
-                  },
-                  {
-                      "name": "state",
-                      "dataType": "string",
-                      "displayName": "State"
-                  },
-                  {
-                      "name": "zipcode",
-                      "dataType": "string",
-                      "displayName": "Zip Code"
+                      "size": 100
                   },
                   {
                       "name": "loanAmount",
-                      "dataType": "double",
-                      "repeating": "false",
-                      "displayName": "Loan Amount"
+                      "dataType": "integer"
                   },
                   {
-                      "name": "loanTerm",
-                      "dataType": "integer",
-                      "displayName": "Loan Term"
+                      "name": "purchasePrice",
+                      "dataType": "integer"
+                  },
+                  {
+                      "name": "rate",
+                      "dataType": "double"
+                  },
+                  {
+                      "name": "type",
+                      "dataType": "string",
+                      "size": 100
                   }
+              ],
+
+              "script": [
+                  "function validateLoanAmount() {",
+                  "var loan = cms.newTrait;",
+                  "if (loan.getProperty('loanAmount') > ( (80/100) * loan.getProperty('purchasePrice') ) ) {",
+                  "cms.invalidInput('The loan amount cannot be greater than 80% of the purchase price');",
+                  "}",
+                  "}",
+
+                  "function beforeAttachTrait() {",
+                  "validateLoanAmount();",
+                  "}",
+
+                  "function afterUpdateTrait() {",
+                  "validateLoanAmount();",
+                  "}"
               ]
           },
           {
@@ -181,6 +186,7 @@ export default class ProfileController {
       promise.permissions.push(this.createPermissions(request.permissions[1]));
       promise.traitDefinitions.push(this.createTraitDefinitions(request.traitDefinitions[0]));
       promise.traitDefinitions.push(this.createTraitDefinitions(request.traitDefinitions[1]));
+      promise.traitDefinitions.push(this.createTraitDefinitions(request.traitDefinitions[2]));
       promise.loanFolder = this.createLoanFolder(request.loansFolder);
 
       Promise.all([

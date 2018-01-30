@@ -24,33 +24,35 @@ export default class ContentController {
     this.objectService = ObjectService;
     this.contentService = ContentService;
     this.currentFolderName = "Root Folder";
+    this.isLoanOfficer = false;
+    this.currentFolder = {};
+    this.rootFolder = {};
 
-    this.folderService.fetchRootFolder().then( (items) => {
-      if (Array.isArray(items) && items.length == 1) {
-        this.rootFolder = items[0];
-      }
-    })
+    this.folderService.fetchRootFolder().then( (item) => {
+      this.rootFolder = item;
+      this.showHomeFolder();
+    });
     this.user = _profileData;
     this.roles = UserService.getRoles(false);
     this.loancontentlist = [];
     this.contentlist = [];
 
     //find out the acl id for approved loans
-    var loanApprovedPromise = this.objectService.fetchPermission('loanApproved').then(aclObject => {
+    this.objectService.fetchPermission('loanApproved').then(aclObject => {
         this.loanApprovalAcl = aclObject;
+        this.objectService.fetchPermission('loanApplication').then(loanApplicationAcl => {
+                this.loanApplicationAcl = loanApplicationAcl;
+                //this.showLoans();
+            }
+        );
       }
     );
 
-    //find out the acl id for applied loans
-    var loanApplicationPromise = this.objectService.fetchPermission('loanApplication').then(aclObject => {
-        this.loanApplicationAcl = aclObject;
-      }
-    );
 
-    Promise.all([loanApprovedPromise, loanApplicationPromise]).then(results => {
-      this.showLoans();
-    })
-
+    var roles = this.roles;
+    if (Array.isArray(roles) && roles.includes("loan_officer")) {
+      this.isLoanOfficer = true;
+    }
   }
 
   showHomeFolder() {
@@ -93,30 +95,38 @@ export default class ContentController {
   }
 
   showItems(content) {
-    this.contentlist = [];
-    this.loading = true;
-    this.showingLoanData = false;
-    var user = this.user;
-    if(this.roles.includes('loan_officer')) {
-      user = {};
+    if(content.type == 'file'){
+        this.viewItem(content);
     }
+    else{
+      this.showFolderItems(content);
+    }
+  }
 
+  showFolderItems(content){
+      this.loading = true;
+      this.showingLoanData = false;
+      var user = this.user;
+      if(this.roles.includes('loan_officer')) {
+          user = {};
+      }
 
-    this.folderService
-      .fetchContent(content, user)
-      .then((items) => {
-        //this.$state.go('auth.profile');
-        console.log("Current Folder"+content.name);
-        this.contentlist = items;
-        this.setCurrentFolder(content);
-      })
-      .catch(() => {
-        //this.reset();
-      })
-      .finally(() => {
-        this.loading = false;
-      })
-    ;
+      this.contentlist = [];
+      this.folderService
+          .fetchContent(content, user)
+          .then((items) => {
+              //this.$state.go('auth.profile');
+              console.log("Current Folder"+content.name);
+              this.contentlist = items;
+              this.setCurrentFolder(content);
+          })
+          .catch(() => {
+              //this.reset();
+          })
+          .finally(() => {
+              this.loading = false;
+          })
+      ;
   }
 
   setCurrentFolder(content) {

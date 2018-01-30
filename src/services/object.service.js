@@ -14,7 +14,8 @@ export default class ObjectService {
       if(this.config.API_URL === "/") {
         var a = document.createElement('a');
         a.href = url;
-        return url.replace(a.host, window.location.host);
+        var urlMod = url.replace(a.protocol, window.location.protocol);
+        return urlMod.replace(a.host, window.location.host);
       }
     }
 
@@ -85,7 +86,8 @@ export default class ObjectService {
       var filter = "?name=" + aclname;
       url = permissionsEndpoint + filter;
       return this.$http.get(url).then(response => {
-        return response.data;
+        var permission = response.data._embedded && response.data._embedded.collection ? response.data._embedded.collection[0] : null;
+        return permission;
       })
     }
 

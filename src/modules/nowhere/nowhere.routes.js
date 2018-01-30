@@ -1,5 +1,5 @@
 // Imports
-import ImportController from './import.controller';
+import NowhereController from './nowhere.controller';
 import UserRoles from './../../core/auth/constants/userRoles';
 
 /**
@@ -8,17 +8,17 @@ import UserRoles from './../../core/auth/constants/userRoles';
  */
 export default function routing(RouterHelper) {
     const states = [{
-        state: 'modules.import',
+        state: 'modules.nowhere',
         config: {
-            url: '/import',
-            title: 'Import',
+            url: '/nowhere',
+            title: 'No subscription',
             data: {
-                access: UserRoles.ROLE_LOGGED,
+                access: UserRoles.ROLE_ANON,
             },
             views: {
                 'content@': {
-                    template: require('./import.html'),
-                    controller: ImportController,
+                    template: require('./nosubscription.html'),
+                    controller: NowhereController,
                     controllerAs: 'vm',
                 },
             },

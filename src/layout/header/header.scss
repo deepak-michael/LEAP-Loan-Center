@@ -2,10 +2,8 @@
 @import "../menu/menu";
 @import "../link/link";*/
 
-/*begin:keshav's styles*/
-
 $leap-grid-size: 8px !default;
-$leap-asset-root: 'assets/';
+$leap-asset-root: '../../../src/common';
 
 $leap-color-white: #FFF !default;
 $leap-color-fog: #F3F4F5 !default;
@@ -121,7 +119,7 @@ $leap-font-weight-bold: 700 !default;
         /*@include bg('../../app/common/icon/cheveron.png', center right);*/
       background-repeat: no-repeat;
       background-position: right center;
-      background-image: url("../../../src/common/icons/cheveron.png");
+      background-image: url("#{$leap-asset-root}/icons/cheveron.png");
         padding-right:grid(1.5);
         max-width:grid(20);
 
@@ -399,14 +397,29 @@ $leap-avatar-text:$leap-color-white !default;
           background-position: center center;
           overflow:hidden;
           height:29px;
-          width:164px;
-          background-image: url("../../../src/common/icons/dell-emc-logo.png");
+          width: 255px;
+          background-image: url("#{$leap-asset-root}/icons/Logo_OT&LEAP-Blk.png");
           text-indent:-1000px;
+
+        }
+
+        .loanShark{
+          background-image: url("#{$leap-asset-root}/icons/Loan_Shark_Logo.png"), url("#{$leap-asset-root}/icons/Logo_LEAP-Blk.png");
+        }
+
+        .mafiaInc{
+          background-image: url("#{$leap-asset-root}/icons/Mafia_Inc_Logo.png"), url("#{$leap-asset-root}/icons/Logo_LEAP-Blk.png");
+        }
+
+        .loanShark, .mafiaInc {
+          height: 65px;
+          margin-top: -0.68em;
+          background-repeat: no-repeat, no-repeat;
+          background-position: left center, right center;
         }
       }
 
       .dev-center {
-        /*@include font(medium);*/
         margin: 20px 0 0 20px;
         text-transform:uppercase;
         color: #647286;

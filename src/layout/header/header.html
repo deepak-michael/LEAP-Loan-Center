@@ -2,7 +2,7 @@
     <div class="breakpoint">
         <div class="content">
             <div class="app-branding">
-                <div><h1><a href="#" ng-click="navigate('/')">DellEMC</a></h1></div>
+                <div><h1><a ng-class="{loanShark : vm.tenant.name == 'Loan_Shark', mafiaInc : vm.tenant.name == 'Mafia_Inc'}" href="#" ng-click="navigate('/')">Dell EMC</a></h1></div>
                 <p class="dev-center"><span class="dev-center" translate="">Loan Center</span></p>
             </div>
             <div class="app-nav">

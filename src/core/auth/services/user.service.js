@@ -40,8 +40,18 @@ export default class UserService {
   getProfile() {
     var tokenName = 'AccessToken';
     if(this.$cookies.get(tokenName)) {
-        this.$localStorage.token = this.$cookies.get(tokenName);
-        this.$rootScope.isAuthenticated = true;
+        var token = this.$cookies.get(tokenName);
+        var decodedToken = this.jwtHelper.decodeToken(token);
+        var isFound = decodedToken.context.subscriptions.find((subscription) => {
+            return subscription.name == this.config.SUBSCRIPTION_NAME;
+        });
+        if(isFound) {
+            this.$localStorage.token = token;
+            this.$rootScope.isAuthenticated = true;
+        }else {
+            this.$localStorage.token = undefined;
+            this.$rootScope.isAuthenticated = false;
+        }
     }
     else {
         this.$localStorage.token = this.$cookies.get(tokenName);
@@ -59,7 +69,7 @@ export default class UserService {
     var profile = this.getProfile();
     if(profile && profile.context && Array.isArray(profile.context.subscriptions)) {
       var userSubscription = profile.context.subscriptions.find((subscription) => {
-        return subscription.tenant.name == this.config.TENANT_NAME;
+        return subscription.name == this.config.SUBSCRIPTION_NAME;
       });
       if(userSubscription) {
         //user is logged in
@@ -71,6 +81,21 @@ export default class UserService {
       }
     }
     return [];
+  }
+
+  getTenant() {
+    var profile = this.getProfile();
+    if(profile && profile.context && Array.isArray(profile.context.subscriptions)) {
+      var userSubscription = profile.context.subscriptions.find((subscription) => {
+        return subscription.name == this.config.SUBSCRIPTION_NAME;
+      });
+      if(userSubscription) {
+        //user is logged in
+        var tenant = userSubscription.tenant;
+        return tenant;
+      }
+    }
+    return {};
   }
 
   /**

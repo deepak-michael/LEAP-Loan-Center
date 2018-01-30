@@ -5,6 +5,7 @@ export default class ImportController {
         this.contentService = ContentService;
         this.folderService = FolderService;
         this.objectService = ObjectService;
+        this.fileName = "Choose file";
 
         this.dialog = $mdDialog;
         this.newContent = {
@@ -18,7 +19,7 @@ export default class ImportController {
             "traits": {},
             "renditions": []
         };
-        this.loanTrait = {};
+        this.loanTrait = { };
         this.versionDescription = "Primary version";
         this.renditionType = "PRIMARY";
         //find out the acl id for applied loans
@@ -47,13 +48,35 @@ export default class ImportController {
                     if (Array.isArray(items) && items.length == 1) {
                         var blobContent = items[0];
                         this.updateNewContentWithBlobInfo(blobContent);
-                        this.folderService.addItem(this.folder, this.newContent).then((item) => {
-                            this.dialog.hide(true, item);
+                        this.folderService.addItem(this.folder, this.newContent).
+                        then((item) => {
+                                this.dialog.hide(true, item);
+                            }
+                        ).catch((error) => {
+                            if(error.status == 400) {
+                                this.serverError = error.data.details;
+                                this.serverErrorsPresent = true;
+                            }
                         })
                     }
                 })
                 .catch((error) => {
-                    //this.dialog.hide(false, []);
+                    //This is a backup for development purposes only
+                    if (error.status == 401) {
+                        this.newContent.type = "object";
+                        delete this.newContent.renditions;
+                        this.folderService.addItem(this.folder, this.newContent).
+                        then((item) => {
+                            this.dialog.hide(true, item);
+                        }
+                        ).catch((error) => {
+                            if(error.status == 400) {
+                                this.serverError = error.data.details;
+                                this.serverErrorsPresent = true;
+                            }
+                        })
+
+                    }
                 })
                 .finally(() => {
                     //this.loading = false;
@@ -82,8 +105,9 @@ export default class ImportController {
     }
 
     updateNewContentWithBlobInfo(blobContent) {
+        this.newContent.renditions = [];
         this.newContent.renditions.push({
-            "name": this.versionDescription,
+            "name": this.fileName,
             "mimeType": blobContent.content.properties.contentType, //like "application/pdf" : take this from blob response
             "contentSize": blobContent.content.properties.size,   // like 49685: content size coming from the previous blob response
             "blobId": blobContent.id,  // comes from the previous blob response of upload and the field "uri"
@@ -93,7 +117,7 @@ export default class ImportController {
 
     applyLoanTraitToContent() {
         this.newContent.traits.loan = {
-            "loantrait" : this.loanTrait
+            "loan" : this.loanTrait
         }
     }
 }

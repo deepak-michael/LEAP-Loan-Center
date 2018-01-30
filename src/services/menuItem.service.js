@@ -35,7 +35,7 @@ export default class MenuItemService {
             {
                 title: 'Loans',
                 state: 'modules.content',
-                access: UserRoles.ROLE_ANON,
+                access: UserRoles.ROLE_LOGGED,
             },
             {
                 title: 'About',

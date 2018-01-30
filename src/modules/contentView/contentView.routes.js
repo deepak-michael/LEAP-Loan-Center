@@ -10,7 +10,7 @@ export default function routing(RouterHelper) {
     const states = [{
         state: 'modules.contentView',
         config: {
-            url: '/',
+            url: '/contentview',
             title: 'ContentView',
             data: {
                 access: UserRoles.ROLE_LOGGED,

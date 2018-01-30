@@ -13,7 +13,8 @@ export default class ContentService {
         if(this.config.API_URL === "/") {
             var a = document.createElement('a');
             a.href = url;
-            return url.replace(a.host, window.location.host);
+            var urlMod = url.replace(a.protocol, window.location.protocol);
+            return urlMod.replace(a.host, window.location.host);
         }
     }
 
@@ -39,16 +40,16 @@ export default class ContentService {
     }
 
     fetchLoanDocuments(user: Object = {}) {
-        var loanContentFilter ="traits.loan.id is not null";
-        var filter = "?filter=" + loanContentFilter;
+        var loanContentFilter ="traits.loan.loanAmount is not null";
+        var filter = "filter=" + loanContentFilter;
         if(user && user.email) {
-          var ownerFilter = "owner = '"+user.email+"'";
+          var ownerFilter = "owner %3D '"+user.email+"'";
           filter +=  " and " + ownerFilter;
         }
-        var url = this.allContentEndpoint + filter;
+        var url = this.allContentEndpoint + "?" + filter;
 
         return this.$http.get(url).then( response => {
-            return response.data._embedded ? response.data._embedded.itemResourceList : [];
+            return response.data._embedded ? response.data._embedded.collection : [];
         })
 
     }

@@ -68,8 +68,8 @@ export default ($provide, $httpProvider, $logProvider, RouterHelperProvider) => 
   }
 
   const config = {
-    APP_TITLE: 'mmtm2016-leap-api',
-    APP_ERROR_PREFIX: 'mmtm2016-leap-api - Error',
+    APP_TITLE: 'Loan Center',
+    APP_ERROR_PREFIX: 'Loan Center - Error',
   };
 
   // Configure router helper provider

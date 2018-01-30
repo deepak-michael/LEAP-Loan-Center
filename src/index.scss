@@ -140,6 +140,17 @@ md-input-container label:not(.md-no-float):not(.md-container-ignore), md-input-c
   margin-bottom: 90px;
 }
 
+.leap-alert-errors{
+  margin: 0px 1%;
+  padding: 0px 1%;
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  font-size: 106%;
+}
+
 @media only screen and (max-width: 416px), (max-device-width: 416px) and (orientation: portrait), (max-device-width: 768px) and (orientation: landscape) {
   .leap-module {
     -webkit-border-radius: 0;
@@ -232,6 +243,12 @@ label {
     .md-button{
       margin: 0 !important;
     }
+  }
+}
+
+.loanForm {
+  label {
+    font-size: 125%;
   }
 }
 

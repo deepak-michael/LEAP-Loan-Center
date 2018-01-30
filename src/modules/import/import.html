@@ -1,7 +1,7 @@
 <md-dialog>
     <md-toolbar>
         <div class="md-toolbar-tools">
-            <h2>Import</h2>
+            <h2>Create Loan Application</h2>
             <span flex></span>
             <md-button class="md-icon-button" ng-click="vm.cancel()">
                 <md-icon class="material-icons">close</md-icon>
@@ -12,7 +12,7 @@
     <div class="md-padding" flex="100">
         <md-dialog-content>
             <md-tabs md-dynamic-height md-border-bottom>
-                <md-tab label="Import loan doc">
+                <md-tab label="Document">
                     <form name="contentForm" flex="100" layout="column">
                 <md-input-container>
                     <label>Name:</label>
@@ -36,61 +36,49 @@
                         </md-button>
                     </div>
                 </div>
-                <md-input-container flex>
+                <md-input-container ng-hide="true" flex>
                     <label>Version Description:</label>
                     <input ng-model="vm.versionDescription" required>
                 </md-input-container>
 
             </form>
                 </md-tab>
-                <md-tab label="Loan info">
+                <md-tab label="Loan Details">
                     <form name="loanForm" flex="100" layout="row">
                         <div layout="column" flex="50">
                             <md-input-container>
-                                <label>First Name:</label>
-                                <input ng-model="vm.loanTrait.firstname" required>
-                            </md-input-container>
-                            <md-input-container>
-                                <label>Last Name:</label>
-                                <input ng-model="vm.loanTrait.lastname" required>
-                            </md-input-container>
-                            <md-input-container>
-                                <label>Address Line 1:</label>
-                                <input ng-model="vm.loanTrait.addressLine1" required>
-                            </md-input-container>
-                            <md-input-container>
-                                <label>Address Line 2:</label>
-                                <input ng-model="vm.loanTrait.addressLine2" required>
+                                <label>Buyer:</label>
+                                <input ng-model="vm.loanTrait.buyer" required>
                             </md-input-container>
                             <md-input-container flex>
-                                <label>City:</label>
-                                <input ng-model="vm.loanTrait.city" required>
+                                <label>Loan Type:</label>
+                                <input ng-model="vm.loanTrait.type" required>
+                            </md-input-container>
+                            <md-input-container>
+                                <label>Loan rate:</label>
+                                <input type="number" ng-model="vm.loanTrait.rate" required>
                             </md-input-container>
                         </div>
                         <div layout="column" flex="50">
                             <md-input-container flex>
-                                <label>State:</label>
-                                <input ng-model="vm.loanTrait.state" required>
-                            </md-input-container>
-                            <md-input-container flex>
-                                <label>Zip code:</label>
-                                <input ng-model="vm.loanTrait.zipcode" required>
-                            </md-input-container>
-                            <md-input-container flex>
                                 <label>Loan amount:</label>
-                                <input ng-model="vm.loanTrait.loanAmount" required>
+                                <input type="number" name="loanAmount" ng-model="vm.loanTrait.loanAmount" ng-focus="vm.serverErrorsPresent=false" required>
                             </md-input-container>
                             <md-input-container flex>
-                                <label>Loan term:</label>
-                                <input ng-model="vm.loanTrait.loanTerm" required>
+                                <label>Purchase price:</label>
+                                <input type="number" ng-model="vm.loanTrait.purchasePrice" ng-focus="vm.serverErrorsPresent=false" required>
                             </md-input-container>
                             <md-input-container flex>
-                                <label class="ng-hide" >Loan term:</label>
-                                <input class="ng-hide">
+                                <label class="ng-hide" >Loan rate:</label>
+                                <input class="ng-hide" />
                             </md-input-container>
-
                         </div>
                     </form>
+                    <div class="leap-alert-errors" layout="row" flex="100" ng-if="vm.serverErrorsPresent">
+                        <p ng-message="serverError">
+                            <span>Error : {{vm.serverError}}</span>
+                        </p>
+                    </div>
                 </md-tab>
             </md-tabs>
         </md-dialog-content>
@@ -98,7 +86,7 @@
 
     <md-dialog-actions layout="row">
         <span flex></span>
-        <md-button class="md-primary" ng-disabled="contentForm.$invalid || loanForm.$invalid" ng-click="vm.saveContent()">
+        <md-button class="md-primary" ng-disabled="contentForm.$invalid || loanForm.$invalid || vm.serverErrorsPresent" ng-click="vm.saveContent()">
             Save
         </md-button>
     </md-dialog-actions>

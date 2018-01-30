@@ -2,7 +2,7 @@
 export default class ContentEditController {
   constructor (content, ObjectService, $mdDialog, UserService, _profileData, $http, LoggerService){
     this.content = content;
-    this.loanTrait = content.traits && content.traits.loan ? content.traits.loan.loantrait : {};
+    this.loanTrait = content.traits && content.traits.loan ? content.traits.loan.loan : {};
     this.objectService = ObjectService;
     this.loggerService = LoggerService;
 
@@ -12,7 +12,7 @@ export default class ContentEditController {
       return rendition.renditionType == "PRIMARY";
     }) : {};
     this.isLoanOfficer = false;
-    this.displayHeader = content.traits && content.traits.loan ? "Edit loan document" : "Edit Document";
+    this.displayHeader = "Edit Loan Application";
     this.mainTabLabel = content.traits && content.traits.loan ? "Loan document" : "Document";
     if(this.content.type == 'folder') {
       this.displayHeader = "Edit folder";
@@ -26,6 +26,7 @@ export default class ContentEditController {
     var roles = this.userRoles;
     if (Array.isArray(roles) && roles.includes("loan_officer")) {
       this.isLoanOfficer = true;
+        this.displayHeader = "Review Loan Application";
       //get loan approval acl that is to be updated when loan officer approves
       this.objectService.fetchPermission('loanApproved').then(aclObject => {
             this.loanApprovalAcl = aclObject;
@@ -76,6 +77,41 @@ export default class ContentEditController {
 
   saveContent() {
     if(this.isLoanOfficer && this.content.type == 'file'){
+        this.applyLoanStatusTraitToContent();
+        if (this.loanApprovalAcl) {
+            this.content.acl = this.loanApprovalAcl.id;
+            this.objectService.updateObjectEx(this.content).then(data => {
+                this.loggerService.showToast("Document reviewed");
+                this.dialog.hide();
+            })
+            .catch((error) => {
+                if(error.status == 400) {
+                    this.serverError = error.data.details;
+                    this.serverErrorsPresent = true;
+                }
+            })
+        }
+        else{
+            this.loggerService.showToast("Document acl was not updated to loan approved acl as permission object wsa nto fetched");
+            this.dialog.hide();
+        }
+    }
+    else{
+        this.objectService.updateObject(this.content).then(data => {
+            this.loggerService.showToast("Update successful");
+            this.dialog.hide();
+        })
+            .catch((error) => {
+                if(error.status == 400) {
+                    this.serverError = error.data.details;
+                    this.serverErrorsPresent = true;
+                }
+            });
+    }
+    }
+
+  saveContentEx() {
+    if(this.isLoanOfficer && this.content.type == 'file'){
       //this.applyLoanStatusTraitToContent();
       //Use Object service to patch object with traits
       this.objectService.patchObject(this.content, this.getLoanStatusTraitToPatch()).then((data) => {
@@ -87,6 +123,12 @@ export default class ContentEditController {
           this.objectService.updateObjectEx(content).then(data => {
             this.loggerService.showToast("Document acl updated to loan approved acl");
             this.dialog.hide();
+          })
+          .catch((error) => {
+              if(error.status == 400) {
+                  this.serverError = error.data.details;
+                  this.serverErrorsPresent = true;
+              }
           })
         }
         else{
@@ -106,6 +148,12 @@ export default class ContentEditController {
       this.objectService.updateObject(this.content).then(data => {
         this.loggerService.showToast("Update successful");
         this.dialog.hide();
+      })
+      .catch((error) => {
+          if(error.status == 400) {
+              this.serverError = error.data.details;
+              this.serverErrorsPresent = true;
+          }
       });
     }
   }
@@ -130,14 +178,31 @@ export default class ContentEditController {
 
   downloadFile() {
     if (this.loanFile) {
-      this.$http.get(this.loanFile.downloadUrl).then((data) => {
+      var downloadUrl = this.cleanUrlx(this.loanFile.downloadUrl);
+      this.$http.get(downloadUrl).then((data) => {
+        var file = new Blob([data.data], {type: this.loanFile.mimeType});
         var anchor = angular.element('<a/>');
+        var url = window.URL || window.webkitURL;
         anchor.attr({
-          href: 'data:' + this.loanFile.mimeType + ';' + encodeURI(data),
+          //href: 'data:' + this.loanFile.mimeType + ',' + encodeURI(data),
+          href: url.createObjectURL(file),
           target: '_blank',
           download: this.loanFile.name
         })[0].click();
       })
     }
   }
+
+  cleanUrlx (url) {
+    url = url ? url.replace("httpss", "https") : "";
+    //temp TODO - until CORS is up proxying through the bundled server
+    if(this.objectService.config.API_URL === "/") {
+      var a = document.createElement('a');
+      a.href = url;
+      var urlMod = url.replace(a.protocol, window.location.protocol);
+      return urlMod.replace(a.host, window.location.host);
+    }
+    return url;
+  }
+
 }

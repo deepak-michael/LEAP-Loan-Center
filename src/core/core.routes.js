@@ -12,9 +12,9 @@
  * @param {LoggerService}           LoggerService
  */
 export default (
-  $rootScope, $state, $localStorage,
+  $rootScope, $state, $localStorage, $location,
   jwtHelper,
-  RouterHelper, AuthService, UserService, LoggerService
+  RouterHelper, AuthService, UserService, LoggerService, config
 ) => {
   const states = [{
     state: '404',
@@ -35,6 +35,9 @@ export default (
 
   let bypass;
 
+  var subscriptionParam = $location.search()['subscription-name'];
+  var originalLocationSearch = $location.search();
+
   // Check user role for requested state + fetch new JWT if current one is expired
   $rootScope.$on('$stateChangeStart', (event, toState, toParams, fromState) => {
     if (bypass) {
@@ -48,15 +51,23 @@ export default (
     const token = $localStorage.token;
     const refreshToken = $localStorage.refreshToken;
 
+    if(fromState.abstract && fromState.name == "") {
+        $rootScope.subscriptionName = subscriptionParam;
+        config.SUBSCRIPTION_NAME = subscriptionParam;
+    }
+
     const checkState = () => {
       bypass = true;
+      if(!subscriptionParam || subscriptionParam == 'undefined') {
+          return $state.go('modules.nowhere');
+      }
+
 
       // User don't have access to this state,
       if ({}.hasOwnProperty.call(toState.data || {}, 'access')
           && !AuthService.authorize(toState.data.access)
       ) {
-        LoggerService.error(`You don't have access to '${toState.title}' page.`);
-
+        //LoggerService.error(`You don't have access to '${toState.title}' page.`);
         return fromState.abstract ? $state.go('auth.login') : $state.reload();
       }
 
@@ -96,7 +107,10 @@ export default (
 
   // Add success handler for route change
   $rootScope.$on('$stateChangeSuccess', (event, toState) => {
-    $rootScope.containerClass = toState.containerClass;
+      //restore all query string parameters back to $location.search
+      $location.search(originalLocationSearch);
+
+      $rootScope.containerClass = toState.containerClass;
   });
 
   // Watcher for user authentication status

@@ -8,10 +8,11 @@ export default class LoginController {
    * @param {ui.router.state.$state}  $state
    * @param {AuthService}             AuthService
    */
-  constructor($state, AuthService) {
+  constructor($state, AuthService, config) {
     this.$state = $state;
     this.authService = AuthService;
     this.loading = false;
+    this.subscriptionName = config.SUBSCRIPTION_NAME;
 
     if (AuthService.isAuthenticated()) {
       this.$state.go('modules.profile');

@@ -15,6 +15,7 @@ export default class HeaderController {
     this.username = UserService.getUserName();
     this.menuItemService = MenuItemService;
     this.profile = UserService.getProfile().context ?  UserService.getProfile().context.user : {};
+
     $scope.$watch(() => $scope.user, (newValue) => {
       this.username = UserService.getUserName();
     });
@@ -22,6 +23,7 @@ export default class HeaderController {
     // For now we need a watcher for actual menu items - note that is $rootScope variable
     $scope.$watch('isAuthenticated', () => {
       this.items = this.menuItemService.getItems();
+      this.tenant = UserService.getTenant();
     });
 
     $scope.opened = false;

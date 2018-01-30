@@ -10,7 +10,7 @@ export default function routing(RouterHelper) {
   const states = [{
     state: 'modules.about',
     config: {
-      url: '/',
+      url: '/about',
       title: 'About',
       data: {
         access: UserRoles.ROLE_ANON,

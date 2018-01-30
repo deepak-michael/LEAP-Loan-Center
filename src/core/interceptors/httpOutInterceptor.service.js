@@ -9,12 +9,20 @@ export default class HttpOutInterceptor {
    * @param {}
    * @param {$injector} $injector
    */
-  constructor($injector) {
+  constructor($injector, config) {
     this.$injector = $injector;
+    this.appConfig = config;
   }
 
   request = (config) => {
     if(config.url == "/auth/getToken" && config.method == "POST") {
+      return config;
+    }
+
+    if(config.url == "/auth/provider" && config.method == "GET") {
+      config.params = config.params || {};
+      config.params.SUBSCRIPTION_NAME= this.appConfig.SUBSCRIPTION_NAME;
+
       return config;
     }
 

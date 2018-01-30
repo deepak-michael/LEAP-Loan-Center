@@ -14,7 +14,7 @@
                 <h3 class="md-title text-center">Login</h3>
 
 
-                <md-button target="_self" href="/auth/provider" class="md-raised md-primary" type="submit"
+                <md-button target="_self" ng-href="/auth/provider?subscriptionName={{vm.subscriptionName}}" class="md-raised md-primary" type="submit"
                            data-ng-disabled="vm.loading">
                     Login to LEAP</md-button>
             </form>

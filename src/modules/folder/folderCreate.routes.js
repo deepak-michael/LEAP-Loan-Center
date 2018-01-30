@@ -10,7 +10,7 @@ export default function routing(RouterHelper) {
     const states = [{
         state: 'modules.folderCreate',
         config: {
-            url: '/',
+            url: '/foldercreate',
             title: 'FolderCreate',
             data: {
                 access: UserRoles.ROLE_LOGGED,

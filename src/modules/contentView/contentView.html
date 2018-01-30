@@ -1,7 +1,7 @@
 <md-dialog>
     <md-toolbar>
         <div class="md-toolbar-tools">
-            <h2>Item info</h2>
+            <h2>Loan Application</h2>
             <span flex></span>
             <md-button class="md-icon-button" ng-click="vm.closeDialog()">
                 <md-icon class="material-icons">close</md-icon>
@@ -12,46 +12,30 @@
     <div class="md-padding" flex="100">
         <md-dialog-content>
             <md-tabs md-dynamic-height md-border-bottom>
-                <md-tab label="Loan info" ng-if="vm.loanTrait.firstname != null">
+                <md-tab label="Loan Details" ng-if="vm.loanTrait.buyer != null">
                     <form name="loanForm" flex="100" layout="row">
                         <div layout="column" flex="50">
                             <md-input-container>
-                                <label>First Name:</label>
-                                <input ng-model="vm.loanTrait.firstname" disabled>
-                            </md-input-container>
-                            <md-input-container>
-                                <label>Last Name:</label>
-                                <input ng-model="vm.loanTrait.lastname" disabled>
-                            </md-input-container>
-                            <md-input-container>
-                                <label>Address Line 1:</label>
-                                <input ng-model="vm.loanTrait.addressLine1" disabled>
-                            </md-input-container>
-                            <md-input-container>
-                                <label>Address Line 2:</label>
-                                <input ng-model="vm.loanTrait.addressLine2" disabled>
+                                <label>Buyer:</label>
+                                <input ng-model="vm.loanTrait.buyer" disabled>
                             </md-input-container>
                             <md-input-container flex>
-                                <label>City:</label>
-                                <input ng-model="vm.loanTrait.city" disabled>
+                                <label>Loan Type:</label>
+                                <input ng-model="vm.loanTrait.type" disabled>
+                            </md-input-container>
+                            <md-input-container>
+                                <label>Loan rate:</label>
+                                <input type="number" ng-model="vm.loanTrait.rate" disabled>
                             </md-input-container>
                         </div>
                         <div layout="column" flex="50">
                             <md-input-container flex>
-                                <label>State:</label>
-                                <input ng-model="vm.loanTrait.state" disabled>
-                            </md-input-container>
-                            <md-input-container flex>
-                                <label>Zip code:</label>
-                                <input ng-model="vm.loanTrait.zipcode" disabled>
-                            </md-input-container>
-                            <md-input-container flex>
                                 <label>Loan amount:</label>
-                                <input ng-model="vm.loanTrait.loanAmount" disabled>
+                                <input type="number" ng-model="vm.loanTrait.loanAmount" disabled>
                             </md-input-container>
                             <md-input-container flex>
-                                <label>Loan term:</label>
-                                <input ng-model="vm.loanTrait.loanTerm" disabled>
+                                <label>Purchase price:</label>
+                                <input type="number" ng-model="vm.loanTrait.purchasePrice" disabled>
                             </md-input-container>
                             <md-input-container flex>
                                 <label class="ng-hide" >Loan term:</label>
@@ -61,7 +45,7 @@
                         </div>
                     </form>
                 </md-tab>
-                <md-tab label="Content">
+                <md-tab label="Document">
                     <form name="contentForm" flex="100" layout="column" >
                         <md-input-container>
                             <label>Name:</label>
@@ -72,20 +56,19 @@
                             <input ng-model="vm.newContent.description" disabled>
                         </md-input-container>
 
-                        <div flex>
-                            <input id="fileInput" type="file" class="ng-hide" onchange="angular.element(this).scope().vm.fileChanged(this)">
+                        <div flex ng-if="vm.newContent.type == 'file'">
                             <md-input-container flex class="md-block">
-                                <input type="text" ng-model="vm.fileName" disabled>
-                                <div class="hint">Select your file</div>
+                                <input type="text" ng-model="vm.loanFile.name" disabled>
+                                <!--<div class="hint">Download</div>-->
                             </md-input-container>
                             <div>
-                                <md-button id="uploadButton" class="md-fab md-mini"
-                                           ng-click="vm.clickUpload()">
-                                    <md-icon class="material-icons">attach_file</md-icon>
+                                <md-button id="downloadButton" class="md-fab md-mini"
+                                           ng-click="vm.downloadFile()">
+                                    <md-icon class="material-icons">file_download</md-icon>
                                 </md-button>
                             </div>
                         </div>
-                        <md-input-container flex>
+                        <md-input-container ng-hide="true" flex>
                             <label>Version Description:</label>
                             <input ng-model="vm.versionDescription" disabled>
                         </md-input-container>
